@@ -1,0 +1,16 @@
+h1 {
+    text-align: center;
+}
+
+#exchanger {
+    margin: auto;
+    padding: 2rem;
+    width: 60%;
+    background-color: wheat;
+    border-radius: 1rem;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+}
