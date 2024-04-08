@@ -28,7 +28,10 @@ async function createDivWithLabels() {
         <label>${element.rank}</label>
         <label>${element.name}</label>
         <label>${element.symbol}</label>
-        <label>${element.priceUsd.slice(0, 10)}</label>
+        <label>${new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        }).format(element.priceUsd)}</label>
         </div>
         `;
         newDiv.innerHTML = html;

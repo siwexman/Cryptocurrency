@@ -1,5 +1,11 @@
 h1 {
     text-align: center;
+    margin: 5rem 0;
+}
+
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+        sans-serif;
 }
 
 #exchanger {
@@ -13,4 +19,45 @@ h1 {
 .content {
     display: flex;
     justify-content: space-between;
+}
+
+#table-currency {
+    width: 70%;
+    margin: auto;
+}
+
+table {
+    padding: 2rem;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    box-shadow: -5px -5px 5px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+}
+
+thead {
+    font-size: 1rem;
+}
+
+tbody {
+    font-size: 0.9rem;
+}
+
+th,
+td {
+    border-bottom: solid 1px lightgrey;
+    padding: 0.5rem 1.5rem;
+}
+
+tbody {
+    font-size: 1rem;
+}
+
+.min-max-width-auto {
+    min-width: auto;
+    max-width: auto;
+}
+
+.text-right {
+    text-align: right;
 }
