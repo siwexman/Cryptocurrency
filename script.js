@@ -1,5 +1,7 @@
 const currency = document.querySelector('#currency');
 
+// https://assets.coincap.io/assets/icons/{symbol in lowercase}@2x.png - icons
+
 const crypto = fetch('https://api.coincap.io/v2/assets')
     .then(res => res.json())
     .then(res => res.data.map(cur => cur.name));
