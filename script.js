@@ -25,26 +25,50 @@ async function createDivWithLabels() {
 
     crypto.forEach(element => {
         const newDiv = document.createElement('div');
+        // const html = `
+        // <div class="content">
+        // <label>${element.rank}</label>
+        // <label>${element.name}</label>
+        // <label>${element.symbol}</label>
+        // <label>${new Intl.NumberFormat('en-US', {
+        //     style: 'currency',
+        //     currency: 'USD',
+        // }).format(element.priceUsd)}</label>
+        // </div>
+        // `;
         const html = `
-        <div class="content">
-        <label>${element.rank}</label>
-        <label>${element.name}</label>
-        <label>${element.symbol}</label>
-        <label>${new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        }).format(element.priceUsd)}</label>
-        </div>
+        <tr>
+            <td>
+                <p>${}</p>
+            </td>
+            <td>
+                <p>
+                    <img src="https://assets.coincap.io/assets/icons/{symbol in lowercase}@2x.png">
+                    ${}
+                </p>
+            </td>
+            <td>
+                <p>${}</p>
+            </td>
+            <td class="text-right">
+                <p>${}</p>
+            </td>
+            <td>
+                
+            </td>
+            <td>
+            
+            </td>
+            <td>
+            
+            </td>
+        </tr>
         `;
+
         newDiv.innerHTML = html;
 
-        // Append the div to the body of the HTML document
         currency.appendChild(newDiv);
 
-        // Simulate an asynchronous operation with setTimeout
-        // new Promise(resolve => setTimeout(resolve, 1000));
-
-        // Return the created div
         return newDiv;
     });
 }
