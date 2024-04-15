@@ -1,79 +1,131 @@
-const currency = document.querySelector('#currency');
+const tableBody = document.querySelector('tbody');
+const cryptocurrencies = {};
 
 // https://assets.coincap.io/assets/icons/{symbol in lowercase}@2x.png - icons
 
-const crypto = fetch('https://api.coincap.io/v2/assets')
-    .then(res => res.json())
-    .then(res => res.data.map(cur => cur.name));
-
-async function logCrypto(symbol) {
+async function createTable() {
     const response = await fetch('https://api.coincap.io/v2/assets');
     const data = await response.json();
-    const cryptoArr = data.data;
-    console.log(cryptoArr);
-    cryptoArr.forEach(element => {});
-    const mapArr = cryptoArr.map(cur => cur.name);
-    const findCur = cryptoArr.find(cur => cur.symbol === symbol);
-    console.log(findCur);
-}
-logCrypto('BTC');
+    const cryptocurrency = data.data;
 
-async function createDivWithLabels() {
-    const response = await fetch('https://api.coincap.io/v2/assets');
-    const data = await response.json();
-    const crypto = data.data;
+    cryptocurrency.forEach(crypto => {
+        const tableRow = document.createElement('tr');
+        const percentage = parseFloat(crypto.changePercent24Hr);
 
-    crypto.forEach(element => {
-        const newDiv = document.createElement('div');
-        // const html = `
-        // <div class="content">
-        // <label>${element.rank}</label>
-        // <label>${element.name}</label>
-        // <label>${element.symbol}</label>
-        // <label>${new Intl.NumberFormat('en-US', {
-        //     style: 'currency',
-        //     currency: 'USD',
-        // }).format(element.priceUsd)}</label>
-        // </div>
-        // `;
         const html = `
-        <tr>
             <td>
-                <p>${}</p>
+                <p></p>
+            </td>
+            <td>
+                <p>${crypto.rank}</p>
             </td>
             <td>
                 <p>
-                    <img src="https://assets.coincap.io/assets/icons/{symbol in lowercase}@2x.png">
-                    ${}
+                    <img src="https://assets.coincap.io/assets/icons/${crypto.symbol.toLowerCase()}@2x.png">
+                    ${crypto.name}
                 </p>
             </td>
             <td>
-                <p>${}</p>
-            </td>
-            <td class="text-right">
-                <p>${}</p>
+                <p>${parseFloat(crypto.priceUsd).toFixed(2)}$</p>
             </td>
             <td>
-                
+                ${
+                    percentage > 0
+                        ? `<p class="green">
+                            <i class="fa fa-solid fa-sort-up"></i>
+                            ${percentage.toFixed(2)}%
+                        </p>`
+                        : `<p class="red">
+                            <i class="fa fa-solid fa-sort-down"></i>
+                            ${percentage.toFixed(2).replace('-', '')}%
+                        <p>`
+                }
             </td>
             <td>
-            
+                <p>${parseFloat(crypto.volumeUsd24Hr).toFixed(2)}$</p>
             </td>
             <td>
-            
+                <p>${parseFloat(crypto.supply).toFixed(2)} ${crypto.symbol}</p>
             </td>
-        </tr>
         `;
 
-        newDiv.innerHTML = html;
+        tableRow.innerHTML = html;
 
-        currency.appendChild(newDiv);
+        tableBody.appendChild(tableRow);
 
-        return newDiv;
+        return tableRow;
     });
 }
 
-createDivWithLabels();
+// createTable();
 
-const string = '0123456789';
-console.log(string.trim());
+// New
+
+async function fetchCryptocurrencies() {
+    try {
+        const response = await fetch('https://api.coincap.io/v2/assets');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        displayTable(data.data);
+    } catch (error) {
+        console.log('There was a problem with your fetch operation:', error);
+    }
+}
+
+function displayTable(currencies) {
+    console.log(currencies);
+
+    currencies.forEach(crypto => {
+        let tableRow = tableBody.insertRow();
+
+        let cellStar = tableRow.insertCell(0);
+        let star = document.createElement('span');
+        star.innerHTML = '&#9734'; //'☆'; // ★ &#9733
+        star.classList.add('star');
+        star.onclick = toggleFavourite;
+        cellStar.appendChild(star);
+
+        let cellRank = tableRow.insertCell(1);
+        cellRank.innerHTML = `<p>${crypto.rank}</p>`;
+
+        let cellName = tableRow.insertCell(2);
+        cellName.innerHTML = `
+                                <p>
+                                <img src="https://assets.coincap.io/assets/icons/${crypto.symbol.toLowerCase()}@2x.png"> 
+                                ${crypto.name}
+                                </p>`;
+
+        let cellSymbol = tableRow.insertCell(3);
+        cellSymbol.innerHTML = `<p>${crypto.symbol}</p>`;
+
+        let cellPrice = tableRow.insertCell(4);
+        const price = parseFloat(crypto.priceUsd);
+        cellPrice.innerHTML = `<p>${price.toFixed(2)}$</p>`;
+
+        let cellPercentage = tableRow.insertCell(5);
+        const percentage = parseFloat(crypto.changePercent24Hr);
+        cellPercentage.innerHTML = `${
+            percentage > 0
+                ? `
+                <p class="green">
+                <i class="fa fa-solid fa-sort-up"></i> 
+                ${percentage.toFixed(2)}%
+                </p>`
+                : `
+                <p class="red">
+                <i class="fa fa-solid fa-sort-down"></i> 
+                ${percentage.toFixed(2).replace('-', '')}
+                </p>`
+        }`;
+
+        let cellVolume = tableRow.insertCell(6);
+        cellVolume.innerHTML = `
+        <p>${parseFloat(crypto.volumeUsd24Hr).toFixed(2)}$</p>`;
+    });
+}
+
+fetchCryptocurrencies();
+
+function toggleFavourite() {}
