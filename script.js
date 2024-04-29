@@ -59,10 +59,10 @@ async function createTable() {
 // createTable();
 
 // New
-
 const currentPrices = {};
-const favourites = new Set();
+const favouriteCurencies = new Set();
 let showFavourites = false;
+const btn = document.querySelector('button');
 
 async function fetchCryptocurrencies() {
     try {
@@ -78,7 +78,6 @@ async function fetchCryptocurrencies() {
 }
 
 function displayTable(currencies) {
-    const btn = document.querySelector('button');
     // console.log(currencies);
 
     currencies.forEach(crypto => {
@@ -156,8 +155,6 @@ function displayTable(currencies) {
             };
         }
     });
-
-    btn.addEventListener('click', () => displayFavourites(currencies));
 }
 
 function updateTable(currentValue, newValue, cell, isPercent = false) {
@@ -198,24 +195,36 @@ function checkIfMinus(value, cell) {
 }
 
 function toggleFavourite(crypto, star) {
-    if (favourites.has(crypto.name)) {
-        favourites.delete(crypto.name);
+    if (favouriteCurencies.has(crypto.name)) {
+        favouriteCurencies.delete(crypto.name);
         star.classList.remove('favourite');
     } else {
-        favourites.add(crypto.name);
+        favouriteCurencies.add(crypto.name);
         star.classList.add('favourite');
     }
-    console.log(favourites);
+    console.log(favouriteCurencies);
 }
 
-function displayFavourites(currencies) {
+btn.addEventListener('click', displayFavourites);
+
+function displayFavourites() {
     showFavourites = !showFavourites;
+    const rows = Array.from(tableBody.rows);
 
     if (showFavourites) {
-        const favourite = currencies.filter(element =>
-            Array.from(favourites).includes(element.name)
-        );
-        console.log(favourite);
+        btn.textContent = 'All';
+        rows.forEach(row => {
+            const cryptoName = row.cells[2].textContent.trim();
+
+            if (favouriteCurencies.has(cryptoName)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    } else {
+        btn.textContent = 'Favourites';
+        rows.forEach(row => (row.style.display = ''));
     }
 }
 
