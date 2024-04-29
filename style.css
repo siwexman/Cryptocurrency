@@ -10,6 +10,18 @@ h1 {
     font-family: 'Courier New', Courier, monospace;
 }
 
+.container {
+    text-align: center;
+    margin: 5rem;
+}
+
+button {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    box-shadow: -3px -3px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
 #table-currency {
     overflow-x: auto;
     width: 70%;
@@ -52,13 +64,14 @@ td:nth-last-child(-n + 4) {
 
 tr {
     border-bottom: solid 1px lightgrey;
+    transition: all 0.5s ease-in-out;
 }
 
 .star {
     cursor: pointer;
 }
 
-.gold {
+.favourite {
     color: gold;
 }
 
@@ -89,6 +102,14 @@ tbody p img {
     max-width: auto;
 }
 
+.update-up {
+    background-color: rgba(97, 255, 83, 0.2);
+}
+
+.update-down {
+    background-color: rgba(255, 77, 77, 0.2);
+}
+
 .red {
     color: red;
 }
@@ -100,5 +121,15 @@ tbody p img {
 @media only screen and (max-width: 1100px) {
     #table-currency {
         width: 90%;
+    }
+    td,
+    th {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+@media only screen and (max-width: 800px) {
+    #table-currency {
+        width: 70%;
     }
 }
